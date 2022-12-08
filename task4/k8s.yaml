@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greeting-api
+  namespace: kube-public
+  labels:
+    k8s-app: greeting-api-web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      k8s-app: greeting-api
+  template:
+    metadata:
+      name: greeting-api
+      labels:
+        k8s-app: greeting-api
+    spec:
+      containers:
+        - name: example-task
+          image: example-task
+          ports:
+            —containerPort: 8080
+            livenessProbe:
+              httpGet:
+                path: /person
+                port: 8080
+              initialDelaySeconds: 5
+              periodSeconds: 5
